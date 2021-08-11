@@ -6,13 +6,11 @@ import 'Worker.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
 
-void main() {
-  var workers = generateWorkers();
-  workers.then((worker) {
-    for (var i = 0; i < worker.length; i++) {
-      print(worker.elementAt(i).getInfo());
-    }
-  });
+void main() async {
+  List<Worker> workers = await generateWorkers();
+  for (Worker w in workers) {
+    print(w.getInfo());
+  }
 }
 
 Future<List<Worker>> generateWorkers() async {

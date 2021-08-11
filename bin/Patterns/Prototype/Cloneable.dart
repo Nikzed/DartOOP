@@ -1,3 +1,5 @@
+import 'Parallelogram.dart';
+
 abstract class Cloneable {
-  Object clone();
+  Parallelogram clone();
 }

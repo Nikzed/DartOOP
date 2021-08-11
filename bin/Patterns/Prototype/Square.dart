@@ -1,9 +1,13 @@
 import 'dart:math';
 import 'Parallelogram.dart';
 
-class Square extends Parallelogram {
+class Square {
+  var a;
   Square(a) : super(a, a, a);
 
+  factory Square._clone(Square square) {
+    return Square(square.a);
+  }
   double getInnerRadius() {
     return a / 2;
   }
@@ -12,8 +16,7 @@ class Square extends Parallelogram {
     return a / sqrt(2);
   }
 
-  @override
   Square clone() {
-    return Square(a);
+    return Square._clone(this);
   }
 }
