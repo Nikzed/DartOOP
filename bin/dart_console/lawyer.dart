@@ -1,4 +1,4 @@
-import 'Worker.dart';
+import 'worker.dart';
 
 class Lawyer extends Worker {
   @override

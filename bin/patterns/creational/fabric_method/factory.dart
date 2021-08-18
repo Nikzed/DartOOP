@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'Building.dart';
-import 'House.dart';
-import 'Skyscraper.dart';
+import 'building.dart';
+import 'house.dart';
+import 'skyscraper.dart';
 
 class Factory {
   Building b;

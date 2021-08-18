@@ -1,5 +1,4 @@
-import 'Gender.dart';
-import 'Worker.dart';
+import 'worker.dart';
 
 class SecurityGuard extends Worker {
   @override

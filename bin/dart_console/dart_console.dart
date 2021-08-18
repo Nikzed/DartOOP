@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'Lawyer.dart';
-import 'SecurityGuard.dart';
-import 'Worker.dart';
+import 'lawyer.dart';
+import 'security_guard.dart';
+import 'worker.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
 

@@ -1,4 +1,4 @@
-import 'Human.dart';
+import 'human.dart';
 
 class Worker extends Human {
   var salary;

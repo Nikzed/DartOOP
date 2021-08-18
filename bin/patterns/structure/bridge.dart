@@ -16,19 +16,30 @@ class Remote {
   void volumeDown() {
     _device.setVolume(_device.getVolume() - 10);
   }
-}
 
-class AdvancedRemote extends Remote{
-
-  AdvancedRemote(Device device) : super(device);
-
-  void mute(){
-    _device.setVolume(0);
+  void volumeUp() {
+    _device.setVolume(_device.getVolume() + 10);
   }
 
+  void channelDown() {
+    _device.setChannel(_device.getChannel() - 1);
+  }
+
+  void channelUp() {
+    _device.setChannel(_device.getChannel() + 1);
+  }
 }
 
-abstract class Device {bool isEnabled();
+class AdvancedRemote extends Remote {
+  AdvancedRemote(Device device) : super(device);
+
+  void mute() {
+    _device.setVolume(0);
+  }
+}
+
+abstract class Device {
+  bool isEnabled();
   void enable();
   void disable();
   int getVolume();
@@ -38,16 +49,14 @@ abstract class Device {bool isEnabled();
 }
 
 class TV implements Device {
-
   bool _enabled;
   int _volume;
   int _channel;
 
-
-  TV(){
+  TV() {
     _enabled = false;
     _volume = 0;
-    _channel = 0;
+    _channel = 1;
   }
 
   @override
@@ -84,20 +93,18 @@ class TV implements Device {
   void setChannel(int channel) {
     _channel = channel;
   }
-
 }
 
-class Radio implements Device{
-
+class Radio implements Device {
   bool _enabled;
   int _volume;
   // КАК ПОМЕНЯТЬ ТИП не задевая интерфейс
   int _channel;
 
-  Radio(){
+  Radio() {
     _enabled = false;
     _volume = 0;
-    _channel = 0;
+    _channel = 1;
   }
 
   @override
@@ -136,11 +143,17 @@ class Radio implements Device{
   }
 }
 
-void main(){
+void main() {
   TV tv = TV();
   Remote remote = new Remote(tv);
+
   remote.togglePower();
+  print('TV is: ${remote._device.isEnabled()}');
+  remote.togglePower();
+  print('TV is: ${remote._device.isEnabled()}');
 
   Radio radio = Radio();
   remote = AdvancedRemote(radio);
+
+  remote.channelUp();
 }

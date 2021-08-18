@@ -1,19 +1,16 @@
 import 'dart:io';
+import 'building.dart';
 
-import 'Building.dart';
-
-class Skyscraper implements Building {
+class House implements Building {
   @override
   void build() {
-    print('SKYSCRAPER');
+    print('HOUSE');
     print('building fundament...');
     sleep(Duration(seconds: 1));
     print('building floors...');
-    sleep(Duration(seconds: 3));
-    print('building elevator...');
     sleep(Duration(seconds: 1));
     print('building roof...');
     sleep(Duration(seconds: 1));
-    print('Skyscraper is done!');
+    print('House is done!');
   }
 }
