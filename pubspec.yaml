@@ -10,10 +10,15 @@ environment:
 #  path: ^1.7.0
 
 dev_dependencies:
+  # added to work with web - start
+  build_runner: ^1.10.0
+  build_web_compilers: ^2.11.0
+  # added to work with web - end
   pedantic: ^1.9.0
   test: ^1.14.4
 
 dependencies:
-  dcdg: ^3.1.1
   html: ^0.15.0
   http: ^0.13.3
+  image: ^3.0.2
+  image_whisperer: ^0.11.1

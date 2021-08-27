@@ -1,8 +1,4 @@
 import 'dart:math';
-
-import 'lawyer.dart';
-import 'security_guard.dart';
-import 'worker.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
 
@@ -53,4 +49,47 @@ List<int> generateAge() {
     ages.add(Random().nextInt(40) + 18);
   }
   return ages;
+}
+
+enum Gender { MALE, FEMALE }
+
+class Human {
+  String name;
+  int age;
+
+  Human(String name, int age) {
+    this.name = name;
+    this.age = age;
+  }
+}
+
+class Worker extends Human {
+  var salary;
+  static var count = 100;
+  var cardId;
+
+  Worker(String name, int age) : super(name, age) {
+    cardId = count++;
+  }
+
+  String getInfo() {
+    return 'card ID: $cardId, '
+        'name: $name, '
+        'age is: $age, '
+        'salary: ${salary ??= 'undefined'}';
+  }
+}
+
+class Lawyer extends Worker {
+  @override
+  var salary = 1200;
+
+  Lawyer(String name, int age) : super(name, age);
+}
+
+class SecurityGuard extends Worker {
+  @override
+  var salary = 700;
+
+  SecurityGuard(String name, int age) : super(name, age);
 }
