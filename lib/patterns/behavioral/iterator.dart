@@ -233,15 +233,12 @@ class SongsOfThe90s implements SongIterator {
 
     // iterator
     //
-    // while(iterator.moveNext()){
-    //
-    //   SongInfo songInfo = iterator.toString() as SongInfo;
-    //
-    //   print(songInfo.songName);
-    //   print(songInfo.bandName);
-    //   print('${songInfo.yearReleased}\n');
-    //
-    // }
+    while(iterator.moveNext()){
+      SongInfo songInfo = iterator.current as SongInfo;
+      print(songInfo.songName);
+      print(songInfo.bandName);
+      print(songInfo.yearReleased);
+    }
 
   }
 
