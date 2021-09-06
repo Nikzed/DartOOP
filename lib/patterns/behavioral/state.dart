@@ -1,26 +1,25 @@
 class Context {
   // Ссылка на текущее состояние Контекста.
-  State _state = null;
+  State _state;
 
   Context(State state) {
-    this.TransitionTo(state);
+    transitionTo(state);
   }
 
   // Контекст позволяет изменять объект Состояния во время выполнения.
-  void TransitionTo(State state) {
+  void transitionTo(State state) {
     print('Context: Transition to ${state.runtimeType}.');
     _state = state;
-    _state.SetContext(this);
+    _state.setContext(this);
   }
 
-  // Контекст делегирует часть своего поведения текущему объекту
-  // Состояния.
-  void Request1() {
-    _state.Handle1();
+  // Контекст делегирует часть своего поведения текущему объекту cостояния.
+  void request1() {
+    _state.handle1();
   }
 
-  void Request2() {
-    _state.Handle2();
+  void request2() {
+    _state.handle2();
   }
 }
 
@@ -31,13 +30,13 @@ class Context {
 abstract class State {
   Context _context;
 
-  void SetContext(Context context) {
+  void setContext(Context context) {
     _context = context;
   }
 
-  void Handle1();
+  void handle1();
 
-  void Handle2();
+  void handle2();
 }
 
 // Конкретные Состояния реализуют различные модели поведения, связанные с
@@ -45,33 +44,36 @@ abstract class State {
 class ConcreteStateA extends State {
   // Context _context;
 
-  void Handle1() {
-    print("ConcreteStateA handles request1.");
-    print("ConcreteStateA wants to change the state of the context.");
-    this._context.TransitionTo(new ConcreteStateB());
+  @override
+  void handle1() {
+    print('ConcreteStateA handles request1.');
+    print('ConcreteStateA wants to change the state of the context.');
+    _context.transitionTo(ConcreteStateB());
   }
 
-  void Handle2() {
-    print("ConcreteStateA handles request2.");
+  @override
+  void handle2() {
+    print('ConcreteStateA handles request2.');
   }
 }
 
 class ConcreteStateB extends State {
-
-  void Handle1() {
-    print("ConcreteStateB handles request1.");
+  @override
+  void handle1() {
+    print('ConcreteStateB handles request1.');
   }
 
-  void Handle2() {
-    print("ConcreteStateB handles request2.");
-    print("ConcreteStateB wants to change the state of the context.");
-    this._context.TransitionTo(new ConcreteStateA());
+  @override
+  void handle2() {
+    print('ConcreteStateB handles request2.');
+    print('ConcreteStateB wants to change the state of the context.');
+    _context.transitionTo(ConcreteStateA());
   }
 }
 
 void main() {
   // Клиентский код.
-  var context = new Context(new ConcreteStateA());
-  context.Request1();
-  context.Request2();
+  var context = Context(ConcreteStateA());
+  context.request1();
+  context.request2();
 }

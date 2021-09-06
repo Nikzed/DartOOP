@@ -1,3 +1,9 @@
+// ОБРАБАТЫВАЕТ ЗАПРОС ПОСЛЕДОВАТЕЛЬНО
+// ПО ЦЕПОЧКЕ ОБРАБОТЧИКОВ
+//
+// суть в том, что каждый класс хранит
+// ссылку на следующий при выполнении последовательности
+
 abstract class Handler {
   Handler setNext(Handler handler);
 
@@ -30,8 +36,9 @@ class MonkeyHandler extends AbstractHandler {
 class SquirrelHandler extends AbstractHandler {
   @override
   Object Handle(Object request) {
-    if (request.toString() == 'Nut')
+    if (request.toString() == 'Nut') {
       return 'Squirrel: I\'ll eat the ${request.toString()}.\n';
+    }
     return super.Handle(request);
   }
 }
@@ -49,15 +56,17 @@ class Client {
   // Обычно клиентский код приспособлен для работы с единственным
   // обработчиком. В большинстве случаев клиенту даже неизвестно, что этот
   // обработчик является частью цепочки.
-  static void ClientCode(AbstractHandler handler) {
+  static void clientCode(AbstractHandler handler) {
     for (var food in {'Nut', 'Banana', 'Cup of coffee'}) {
       print('Client: Who wants a $food?');
 
       var result = handler.Handle(food);
 
-      if (result != null) print('   $result');
-
-      print('   $food was left untouched.');
+      if (result != null) {
+        print('   $result');
+      } else {
+        print('   $food was left untouched.');
+      }
     }
   }
 }
@@ -72,9 +81,9 @@ void main() {
   // Клиент должен иметь возможность отправлять запрос любому
   // обработчику, а не только первому в цепочке.
   print('Chain: Monkey > Squirrel > Dog\n');
-  Client.ClientCode(monkey);
+  Client.clientCode(monkey);
   print('');
 
   print('Subchain: Squirrel > Dog\n');
-  Client.ClientCode(squirrel);
+  Client.clientCode(squirrel);
 }

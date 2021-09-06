@@ -1,3 +1,6 @@
+// паттерн используется когда нужно откладывать выполнение команд,
+// выстраивать их в очереди, а также хранить историю и делать отмену.
+
 abstract class Command {
   void Execute();
 }
@@ -9,8 +12,7 @@ class SimpleCommand implements Command {
 
   @override
   void Execute() {
-    print(
-        'SimpleCommand: See, I can do simple things like printing (${_payload})');
+    print('SimpleCommand: I can do simple things like printing ($_payload)');
   }
 }
 
@@ -46,19 +48,17 @@ class Invoker {
 
   Command _onFinish;
 
-  // Initialize commands.
-  void SetOnStart(Command command) {
+  void setOnStart(Command command) {
     _onStart = command;
   }
 
-  void SetOnFinish(Command command) {
+  void setOnFinish(Command command) {
     _onFinish = command;
   }
 
-  // The Invoker does not depend on concrete command or receiver classes.
-  // The Invoker passes a request to a receiver indirectly, by executing a
-  // command.
-  void DoSomethingImportant() {
+  // Invoker не зависит от конкретной команды или классов получателя.
+  // Invoker передает запрос получателю косвенно, выполняя команду косвенно
+  void doSomethingImportant() {
     print('Invoker: Does anybody want something done before I begin?');
     if (_onStart is Command) {
       _onStart.Execute();
@@ -74,11 +74,12 @@ class Invoker {
 }
 
 void main() {
+  // создали инвокер
   Invoker invoker = Invoker();
-  invoker.SetOnStart(SimpleCommand('Say Hi!'));
-  Receiver receiver = Receiver();
-  invoker.SetOnFinish(
-      ComplexCommand(receiver, 'Send email', 'Save report'));
 
-  invoker.DoSomethingImportant();
+  invoker.setOnStart(SimpleCommand('I PRINTED SOMETHING!'));
+  Receiver receiver = Receiver();
+  invoker.setOnFinish(ComplexCommand(receiver, 'Send email', 'Save report'));
+
+  invoker.doSomethingImportant();
 }
