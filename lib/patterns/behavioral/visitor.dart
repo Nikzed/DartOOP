@@ -1,35 +1,37 @@
 abstract class IComponent {
-  void Accept(IVisitor visitor);
+  void accept(IVisitor visitor);
 }
 
 // Каждый Конкретный Компонент должен реализовать метод Accept таким
 // образом, чтобы он вызывал метод посетителя, соответствующий классу
 // компонента.
-class ConcreteComponentA implements IComponent {
+class ComponentA implements IComponent {
 // Обратите внимание, мы вызываем VisitConcreteComponentA, что
 // соответствует названию текущего класса. Таким образом мы позволяем
 // посетителю узнать, с каким классом компонента он работает.
 
-  void Accept(IVisitor visitor) {
-    visitor.VisitConcreteComponentA(this);
+  @override
+  void accept(IVisitor visitor) {
+    visitor.visitA(this);
   }
 
 // Конкретные Компоненты могут иметь особые методы, не объявленные в их
 // базовом классе или интерфейсе. Посетитель всё же может использовать
 // эти методы, поскольку он знает о конкретном классе компонента.
-  String ExclusiveMethodOfConcreteComponentA() {
-    return "A";
+  String methodA() {
+    return 'A';
   }
 }
 
-class ConcreteComponentB implements IComponent {
+class ComponentB implements IComponent {
 // То же самое здесь: VisitConcreteComponentB => ConcreteComponentB
-  void Accept(IVisitor visitor) {
-    visitor.VisitConcreteComponentB(this);
+  @override
+  void accept(IVisitor visitor) {
+    visitor.visitB(this);
   }
 
-  String SpecialMethodOfConcreteComponentB() {
-    return "B";
+  String methodB() {
+    return 'B';
   }
 }
 
@@ -37,9 +39,9 @@ class ConcreteComponentB implements IComponent {
 // классам компонентов. Сигнатура метода посещения позволяет посетителю
 // определить конкретный класс компонента, с которым он имеет дело.
 abstract class IVisitor {
-  void VisitConcreteComponentA(ConcreteComponentA element);
+  void visitA(ComponentA element);
 
-  void VisitConcreteComponentB(ConcreteComponentB element);
+  void visitB(ComponentB element);
 }
 
 // Конкретные Посетители реализуют несколько версий одного и того же
@@ -51,25 +53,28 @@ abstract class IVisitor {
 // случае было бы полезно хранить некоторое промежуточное состояние
 // алгоритма при выполнении методов посетителя над различными объектами
 // структуры.
-class ConcreteVisitor1 implements IVisitor {
-  void VisitConcreteComponentA(ConcreteComponentA element) {
-    print(
-        element.ExclusiveMethodOfConcreteComponentA() + " + ConcreteVisitor1");
+class Visitor1 implements IVisitor {
+  @override
+  void visitA(ComponentA element) {
+    print(element.methodA() + ' + ConcreteVisitor1');
   }
 
-  void VisitConcreteComponentB(ConcreteComponentB element) {
-    print(element.SpecialMethodOfConcreteComponentB() + " + ConcreteVisitor1");
+  @override
+  void visitB(ComponentB element) {
+    print(element.methodB() + ' + ConcreteVisitor1');
   }
 }
 
-class ConcreteVisitor2 implements IVisitor {
-  void VisitConcreteComponentA(ConcreteComponentA element) {
+class Visitor2 implements IVisitor {
+  @override
+  void visitA(ComponentA element) {
     print(
-        element.ExclusiveMethodOfConcreteComponentA() + " + ConcreteVisitor2");
+        element.methodA() + ' + ConcreteVisitor2');
   }
 
-  void VisitConcreteComponentB(ConcreteComponentB element) {
-    print(element.SpecialMethodOfConcreteComponentB() + " + ConcreteVisitor2");
+  @override
+  void visitB(ComponentB element) {
+    print(element.methodB() + ' + ConcreteVisitor2');
   }
 }
 
@@ -77,25 +82,25 @@ class Client {
   // Клиентский код может выполнять операции посетителя над любым набором
   // элементов, не выясняя их конкретных классов. Операция принятия
   // направляет вызов к соответствующей операции в объекте посетителя.
-  static void ClientCode(List<IComponent> components, IVisitor visitor) {
+  static void clientCode(List<IComponent> components, IVisitor visitor) {
     components.forEach((element) {
-      element.Accept(visitor);
+      element.accept(visitor);
     });
   }
 }
 
 void main() {
-  List<IComponent> components = [ConcreteComponentA(), ConcreteComponentB()];
+  List<IComponent> components = [ComponentA(), ComponentB()];
 
   print(
       'The client code works with all visitors via the base Visitor interface:');
-  var visitor1 = ConcreteVisitor1();
-  Client.ClientCode(components, visitor1);
+  var visitor1 = Visitor1();
+  Client.clientCode(components, visitor1);
 
   print('');
 
   print(
       'It allows the same client code to work with different types of visitors:');
-  var visitor2 = ConcreteVisitor2();
-  Client.ClientCode(components, visitor2);
+  var visitor2 = Visitor2();
+  Client.clientCode(components, visitor2);
 }

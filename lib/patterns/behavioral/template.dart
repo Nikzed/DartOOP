@@ -4,108 +4,98 @@
 //
 // Конкретные подклассы должны реализовать эти операции, но оставить сам
 // шаблонный метод без изменений.
-abstract class AbstractClass
-{
+abstract class AbstractClass {
   // Шаблонный метод определяет скелет алгоритма.
-  void TemplateMethod()
-  {
-    this.BaseOperation1();
-    this.RequiredOperations1();
-    this.BaseOperation2();
-    this.Hook1();
-    this.RequiredOperation2();
-    this.BaseOperation3();
-    this.Hook2();
+  void TemplateMethod() {
+    base1();
+    required1();
+    base2();
+    hook1();
+    required2();
+    base3();
+    hook2();
   }
 
   // Эти операции уже имеют реализации.
-  void BaseOperation1()
-  {
-    print("AbstractClass says: I am doing the bulk of the work");
+  void base1() {
+    print('AbstractClass says: I am doing the bulk of the work');
   }
 
-  void BaseOperation2()
-  {
-    print("AbstractClass says: But I let subclasses override some operations");
+  void base2() {
+    print('AbstractClass says: But I let subclasses override some operations');
   }
 
-  void BaseOperation3()
-  {
-    print("AbstractClass says: But I am doing the bulk of the work anyway");
+  void base3() {
+    print('AbstractClass says: But I am doing the bulk of the work anyway');
   }
 
   // А эти операции должны быть реализованы в подклассах.
-  void RequiredOperations1();
+  void required1();
 
-  void RequiredOperation2();
+  void required2();
 
   // Это «хуки». Подклассы могут переопределять их, но это не обязательно,
   // поскольку у хуков уже есть стандартная (но пустая) реализация. Хуки
   // предоставляют дополнительные точки расширения в некоторых критических
   // местах алгоритма.
-  void Hook1() { }
+  void hook1() {}
 
-  void Hook2() { }
+  void hook2() {}
 }
 
 // Конкретные классы должны реализовать все абстрактные операции базового
 // класса. Они также могут переопределить некоторые операции с реализацией
 // по умолчанию.
-class ConcreteClass1 extends AbstractClass
-{
-  void RequiredOperations1()
-{
-  print("ConcreteClass1 says: Implemented Operation1");
-}
+class ConcreteClass1 extends AbstractClass {
+  @override
+  void required1() {
+    print('ConcreteClass1 says: Implemented Operation1');
+  }
 
-void RequiredOperation2()
-{
-  print("ConcreteClass1 says: Implemented Operation2");
-}
+  @override
+  void required2() {
+    print('ConcreteClass1 says: Implemented Operation2');
+  }
 }
 
 // Обычно конкретные классы переопределяют только часть операций базового
 // класса.
-class ConcreteClass2 extends AbstractClass
-{
-  void RequiredOperations1()
-{
-  print("ConcreteClass2 says: Implemented Operation1");
+class ConcreteClass2 extends AbstractClass {
+  @override
+  void required1() {
+    print('ConcreteClass2 says: Implemented Operation1');
+  }
+
+  @override
+  void required2() {
+    print('ConcreteClass2 says: Implemented Operation2');
+  }
+
+  @override
+  void hook1() {
+    print('ConcreteClass2 says: Overridden Hook1');
+  }
 }
 
-void RequiredOperation2()
-{
-  print("ConcreteClass2 says: Implemented Operation2");
-}
-
-void Hook1()
-{
-  print("ConcreteClass2 says: Overridden Hook1");
-}
-}
-
-class Client
-{
+class Client {
   // Клиентский код вызывает шаблонный метод для выполнения алгоритма.
   // Клиентский код не должен знать конкретный класс объекта, с которым
   // работает, при условии, что он работает с объектами через интерфейс их
   // базового класса.
-  static void ClientCode(AbstractClass abstractClass)
-  {
+  static void clientCode(AbstractClass abstractClass) {
     // ...
     abstractClass.TemplateMethod();
     // ...
   }
 }
 
-void main(){
-  print("Same client code can work with different subclasses:");
+void main() {
+  print('Same client code can work with different subclasses:');
 
-  Client.ClientCode(new ConcreteClass1());
+  Client.clientCode(ConcreteClass1());
 
-  print("\n");
+  print('');
 
-  print("Same client code can work with different subclasses:");
-  Client.ClientCode(new ConcreteClass2());
-
+  print('Same client code can work with different subclasses:');
+  Client.clientCode(ConcreteClass2());
 }

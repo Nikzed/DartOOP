@@ -145,7 +145,7 @@ class Radio implements Device {
 
 void main() {
   TV tv = TV();
-  Remote remote = new Remote(tv);
+  Remote remote = Remote(tv);
 
   remote.togglePower();
   print('TV is: ${remote._device.isEnabled()}');
